@@ -17,7 +17,7 @@ public class AdvertisementManager {
 
     public void processVideos() {       // метод обеспечивает подбор списка видео из доступных, просмотр которых обеспечивает максимальную выгоду
          // проверяем, что наши списки с роликами не пусты
-        if (storage.list().isEmpty() && getVideoList().isEmpty()) throw new NoVideoAvailableException();
+        if (storage.list().isEmpty() || getVideoList().isEmpty()) throw new NoVideoAvailableException();
         // Перед выводом на консоль необходимо отсортировать согласно условию и вызвать для каждого ролика метод уменьшающий кол-во показов
         prepareLists(getVideoList()).stream()
                 .sorted(Comparator.comparingLong(Advertisement::getAmountPerOneDisplaying).reversed().thenComparingLong(Advertisement::getAmountPerOneSecondDisplaying))
