@@ -11,9 +11,9 @@ public class Restaurant {
         tablet.addObserver(cook);  // добавляем повара наблюдателем объекта Tablet
         cook.addObserver(waiter); // добавляем официанта наблюдателем объекта Cook
         tablet.createOrder();  // инициируем создание заказа
-       // tablet.createOrder();  // инициируем создание заказа
-       // tablet.createOrder();  // инициируем создание заказа
-       // tablet.createOrder();  // инициируем создание заказа
+       tablet.createOrder();  // инициируем создание заказа
+       tablet.createOrder();  // инициируем создание заказа
+        tablet.createOrder();  // инициируем создание заказа
 
 
     }
