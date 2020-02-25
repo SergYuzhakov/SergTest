@@ -11,9 +11,17 @@ public class Order {
     private final Tablet tablet;
     protected List<Dish> dishes;
 
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    protected void initDishes() throws IOException{
+        dishes = ConsoleHelper.getAllDishesForOrder(); // список dishes должен быть инициализирован результатом работы метода getAllDishesForOrder
+    }
+
     public Order(Tablet tablet) throws IOException {
         this.tablet = tablet;
-        dishes = ConsoleHelper.getAllDishesForOrder(); // список dishes должен быть инициализирован результатом работы метода getAllDishesForOrder
+        initDishes();
 
     }
 

@@ -3,6 +3,7 @@ package level29_Multithreadind.task2712_restaurant;
 import level29_Multithreadind.task2712_restaurant.ad.AdvertisementManager;
 import level29_Multithreadind.task2712_restaurant.ad.NoVideoAvailableException;
 import level29_Multithreadind.task2712_restaurant.kitchen.Order;
+import level29_Multithreadind.task2712_restaurant.kitchen.TestOrder;
 
 import java.io.IOException;
 import java.util.Observable;
@@ -17,33 +18,41 @@ public class Tablet extends Observable { //Класс наследуемый о�
         this.number = number;
     }
 
+    public void  createTestOrder(){  // метод будет случайным образом генерировать заказ со случайными блюдами не общаясь с реальным человеком.
+        try {
+            TestOrder testOrder = new TestOrder(this);
+            manageOrder(testOrder);
+        } catch(IOException e){
+            logger.log(Level.SEVERE, "Console is unavailable.");
+        }
+    }
+
     public Order createOrder(){
         Order order = null;
-        AdvertisementManager adManager = null;
         try {
             order = new Order(this); // создали новый заказ
-
-            if(!order.isEmpty()) {
-                ConsoleHelper.writeMessage(order.toString());  // вывели его на консоль
-                adManager = new AdvertisementManager(order.getTotalCookingTime() * 60);
-                try {
-                    adManager.processVideos(); // Заказ готовится в то время, как видео смотрится.
-                }
-                catch (NoVideoAvailableException e){
-                    logger.log(Level.INFO, "No video is available for the order " + order);
-                }
-                setChanged();   // помечаем объект как измененный
-                notifyObservers(order); // и извещаем наблюдателя
-            }
+            manageOrder(order);  // обработали его
 
         } catch (IOException e) {
             logger.log(Level.SEVERE,"Console is unavailable.");
         }
 
-        finally {
-
-        }
         return order;
+    }
+
+
+    public void manageOrder(Order order) {
+        if (!order.isEmpty()) {
+            ConsoleHelper.writeMessage(order.toString());  // вывели его на консоль
+            setChanged();   // помечаем объект как измененный
+            notifyObservers(order); // и извещаем наблюдателя
+            try {
+                AdvertisementManager adManager = new AdvertisementManager(order.getTotalCookingTime() * 60);
+                adManager.processVideos(); // Заказ готовится в то время, как видео смотрится.
+            } catch (NoVideoAvailableException e) {
+                logger.log(Level.INFO, "No video is available for the order " + order);
+            }
+        }
     }
 
     @Override
@@ -52,4 +61,6 @@ public class Tablet extends Observable { //Класс наследуемый о�
                 "number=" + number +
                 '}';
     }
+
+
 }

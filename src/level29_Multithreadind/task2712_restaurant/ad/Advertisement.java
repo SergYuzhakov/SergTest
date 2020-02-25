@@ -17,7 +17,7 @@ public class Advertisement {
         this.initialAmount = initialAmount;
         this.hits = hits;
         this.duration = duration;
-        amountPerOneDisplaying = hits > 0 ?  initialAmount/hits : 0; // количество показов у любого рекламного ролика из набора - положительное число.
+        amountPerOneDisplaying =  hits > 0 ? initialAmount / hits : 0; // количество показов у любого рекламного ролика из набора - положительное число.
     }
 
     public int getHits() {
@@ -32,21 +32,21 @@ public class Advertisement {
         return duration;
     }
 
-    public long getAmountPerOneDisplaying() { // возвращает стоимость показа одного рекламного ролика в копейках
+    public long getAmountPerOneDisplaying() {
         return amountPerOneDisplaying;
     }
-                            // возвращает стоимость показа одной секунды рекламного ролика в тысячных частях копейки
-    public long getAmountPerOneSecondDisplaying(){  // возвращает стоимость показа одной секунды рекламного ролика в тысячных частях копейки)
-        return getAmountPerOneDisplaying()*1000/getDuration();
+
+    public long getAmountPerOneSecondDisplaying(){
+        return amountPerOneDisplaying*1000/duration;
     }
 
     public void revalidate(){
-        if(hits <= 0) throw new  UnsupportedOperationException();
+        if(hits <= 0) throw new  NoVideoAvailableException();
         hits--;
     }
 
     @Override
     public String toString() {
-        return getName() + String.format(" is displaying... %d %d ",getAmountPerOneDisplaying(), getAmountPerOneSecondDisplaying());
+        return getName() + String.format(" is displaying... %d, %d", amountPerOneDisplaying, getAmountPerOneSecondDisplaying());
     }
 }
