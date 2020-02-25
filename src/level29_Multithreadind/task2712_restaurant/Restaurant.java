@@ -1,25 +1,29 @@
 package level29_Multithreadind.task2712_restaurant;
 
 import level29_Multithreadind.task2712_restaurant.kitchen.Cook;
+import level29_Multithreadind.task2712_restaurant.kitchen.Order;
 import level29_Multithreadind.task2712_restaurant.kitchen.Waiter;
 import level29_Multithreadind.task2712_restaurant.statistic.StatisticManager;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Restaurant {
     private static final int ORDER_CREATING_INTERVAL = 100;
+    private static final LinkedBlockingQueue<Order> orderQueue = new LinkedBlockingQueue<>();
 
 
     public static void main(String[] args) {
         Waiter waiter = new Waiter(); // создаем официанта
         List<Cook> cooks = new LinkedList<>();      //  создаем список поваров
-        OrderManager orderManager = new OrderManager();
+        //OrderManager orderManager = new OrderManager();
 
         for (int i = 0; i < 2 ; i++) {
-            Cook cook = new Cook("Amigo" + i);
-            StatisticManager.getInstance().register(cook);
-            cook.addObserver(waiter);
+            Cook cook = new Cook("Amigo " + i);
+            cook.setOrderQueue(orderQueue);  // устанавливаем нашу закрепленную константу -очередь в качестве очереди для созданного повара
+           // StatisticManager.getInstance().register(cook);
+          //  cook.addObserver(waiter);
             cooks.add(cook);
 
         }
@@ -27,8 +31,8 @@ public class Restaurant {
         List<Tablet> tablets = new LinkedList<>();  // создаем 5 планшетов
         for (int i = 1; i <=5 ; i++) {
             Tablet tablet = new Tablet(i);
-            tablet.addObserver(orderManager);
-
+            tablet.setOrderQueue(orderQueue);
+            //tablet.addObserver(orderManager);
             tablets.add(tablet);
         }
 

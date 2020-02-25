@@ -14,19 +14,12 @@ public class StatisticManager  {
 
     private static StatisticManager instance;
     private StatisticStorage statisticStorage = new StatisticStorage();
-    private Set<Cook> cooks = new HashSet<>();
 
-    public Set<Cook> getCooks() {
-        return cooks;
-    }
 
     public void register(EventDataRow data){  //  метод будет регистрировать событие в хранилище ( в statisticStorage)
         statisticStorage.put(data);
     }
 
-    public void register(Cook cook){   //  методбудет регистрировать полученного повара
-        cooks.add(cook);
-    }
 
     private StatisticManager() {
     }

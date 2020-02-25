@@ -7,12 +7,18 @@ import level29_Multithreadind.task2712_restaurant.kitchen.TestOrder;
 
 import java.io.IOException;
 import java.util.Observable;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Tablet extends Observable { //Класс наследуемый от Observable - оповещатель, информирует об изменениях через notifyObservers()
+public class Tablet  {
     private final int number;
     private static  java.util.logging.Logger logger = Logger.getLogger(Tablet.class.getName());
+    private LinkedBlockingQueue<Order> orderQueue;
+
+    public void setOrderQueue(LinkedBlockingQueue<Order> orderQueue) {
+        this.orderQueue = orderQueue;
+    }
 
     public Tablet(int number) {
         this.number = number;
@@ -44,9 +50,17 @@ public class Tablet extends Observable { //Класс наследуемый о�
     public void manageOrder(Order order) {
         if (!order.isEmpty()) {
             ConsoleHelper.writeMessage(order.toString());  // вывели его на консоль
-            setChanged();   // помечаем объект как измененный
-            notifyObservers(order); // и извещаем наблюдателя
             try {
+                orderQueue.put(order); // поместили заказ в очередь
+            }
+            catch (InterruptedException e){
+
+            }
+
+          //  setChanged();   // помечаем объект как измененный
+          //  notifyObservers(order); // и извещаем наблюдателя
+            try {
+
                 AdvertisementManager adManager = new AdvertisementManager(order.getTotalCookingTime() * 60);
                 adManager.processVideos(); // Заказ готовится в то время, как видео смотрится.
             } catch (NoVideoAvailableException e) {

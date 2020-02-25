@@ -14,7 +14,7 @@ public class TestOrder extends Order {
     protected void initDishes() throws IOException {
         dishes = new ArrayList<>();
         Dish [] dishesTestOrder = Dish.values();
-        int countDishes = (int) (Math.random() * dishesTestOrder.length +1);
+        int countDishes = (int) (Math.random() * dishesTestOrder.length + 1);
 
         for (int i = 0; i < countDishes ; i++) {
             int id = (int)(Math.random() * dishesTestOrder.length);
