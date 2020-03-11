@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Model {
-
+/*
     public static void main(String[] args) {
+
         Model m = new Model();
         m.gameTiles = new Tile[][]{{new Tile(4), new Tile(4), new Tile(2), new Tile(0)},
                 {new Tile(4), new Tile(2), new Tile(0), new Tile(4)},
@@ -22,11 +23,31 @@ public class Model {
             System.out.println();
         }
     }
-
+*/
 
     private static final int FIELD_WIDTH = 4;
     private Tile[][] gameTiles;
     protected int score, maxTile;
+
+    public Tile[][] getGameTiles() {
+        return gameTiles;
+    }
+
+    public boolean canMove(){
+        if(!getEmptyTiles().isEmpty()) return true;
+
+        for (int i = 0; i < FIELD_WIDTH - 1 ; i++) {
+            for (int j = 0; j < FIELD_WIDTH ; j++) {
+                if(j != 3) {
+                    if(gameTiles[i][j].value == gameTiles[i][j+1].value | gameTiles[i][j].value == gameTiles[i+1][j].value) return true;
+                }
+                else {
+                    if(gameTiles[i][j].value == gameTiles[i+1][j].value) return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public Model() {
         gameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
