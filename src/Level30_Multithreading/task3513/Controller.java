@@ -13,6 +13,10 @@ public class Controller extends KeyAdapter {
         view = new View(this);
     }
 
+    public View getView() {
+        return view;
+    }
+
     public void resetGame(){
         view.isGameWon = false;
         view.isGameLost = false;
@@ -21,7 +25,7 @@ public class Controller extends KeyAdapter {
     }
 
     public Tile[][] getGameTiles(){
-        return getGameTiles();
+        return model.getGameTiles();
     }
     public int getScore(){
         return model.score;

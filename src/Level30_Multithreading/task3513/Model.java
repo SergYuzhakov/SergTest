@@ -2,6 +2,7 @@ package Level30_Multithreading.task3513;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class Model {
@@ -28,6 +29,9 @@ public class Model {
     private static final int FIELD_WIDTH = 4;
     private Tile[][] gameTiles;
     protected int score, maxTile;
+    private Stack<Tile[][]> previousStates;
+    private Stack<Integer> previousScores;
+    private boolean isSaveNeeded = true;
 
     public Tile[][] getGameTiles() {
         return gameTiles;
@@ -51,8 +55,30 @@ public class Model {
 
     public Model() {
         gameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        previousStates = new Stack<>();
+        previousScores = new Stack<>();
         resetGameTiles();
     }
+
+    private void saveState(Tile[][] gameTiles){
+        Tile[][] tempGameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        for (int i = 0; i < FIELD_WIDTH ; i++) {
+            for (int j = 0; j < FIELD_WIDTH ; j++) {
+                tempGameTiles[i][j] = new Tile(gameTiles[i][j].value);
+            }
+        }
+         previousStates.push(tempGameTiles);
+         previousScores.push(score);
+         isSaveNeeded = false;
+
+    }
+
+    public void rollback(){
+        if(!previousStates.empty()) gameTiles = previousStates.pop();
+        if(!previousScores.empty()) score = previousScores.pop();
+
+    }
+
     private List<Tile> getEmptyTiles(){
         List<Tile> listEmptyTiles = Arrays.stream(gameTiles).flatMap(Arrays::stream).filter(Tile::isEmpty).collect(Collectors.toList());
         return listEmptyTiles;
