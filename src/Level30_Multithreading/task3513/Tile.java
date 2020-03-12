@@ -5,6 +5,10 @@ import java.awt.*;
 public class Tile {
     int value;
 
+    public int getValue() {
+        return value;
+    }
+
     public Tile(int value) {
         this.value = value;
     }

@@ -60,11 +60,11 @@ public class Model {
         resetGameTiles();
     }
 
-    private void saveState(Tile[][] gameTiles){
+    private void saveState(Tile[][] tiles){
         Tile[][] tempGameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
         for (int i = 0; i < FIELD_WIDTH ; i++) {
             for (int j = 0; j < FIELD_WIDTH ; j++) {
-                tempGameTiles[i][j] = new Tile(gameTiles[i][j].value);
+                tempGameTiles[i][j] = new Tile(tiles[i][j].getValue());
             }
         }
          previousStates.push(tempGameTiles);
@@ -73,9 +73,11 @@ public class Model {
 
     }
 
-    public void rollback(){
-        if(!previousStates.empty()) gameTiles = previousStates.pop();
-        if(!previousScores.empty()) score = previousScores.pop();
+    public void rollback(){ // Метод rollback не должен модифицировать текущее игровое состояние в случае, если хотя бы один из стеков пуст.
+        if(!previousStates.empty() & !previousScores.empty()) {
+            gameTiles = previousStates.pop();
+            score = previousScores.pop();
+        }
 
     }
 
@@ -158,39 +160,27 @@ public class Model {
     }
 
     public void right(){
-        boolean isRightChange = false;
         rotationClockWise();
         rotationClockWise();
-        for (int i = 0; i < FIELD_WIDTH ; i++) {
-            if(compressTiles(gameTiles[i]) | mergeTiles(gameTiles[i])) isRightChange = true;
-        }
+        left();
         rotationClockWise();
         rotationClockWise();
-        if(isRightChange) addTile();
-
     }
 
     public void up(){
-        boolean isUpChange = false;
         rotationClockWise();
         rotationClockWise();
         rotationClockWise();
-        for (int i = 0; i < FIELD_WIDTH ; i++) {
-            if(compressTiles(gameTiles[i]) | mergeTiles(gameTiles[i])) isUpChange = true;
-        }
+        left();
         rotationClockWise();
-         if (isUpChange) addTile();
+
     }
 
     public void down(){
-        boolean isDownChange = false;
         rotationClockWise();
-        for (int i = 0; i < FIELD_WIDTH ; i++) {
-            if(compressTiles(gameTiles[i]) | mergeTiles(gameTiles[i])) isDownChange = true;
-        }
+        left();
         rotationClockWise();
         rotationClockWise();
         rotationClockWise();
-         if (isDownChange) addTile();
     }
 }
