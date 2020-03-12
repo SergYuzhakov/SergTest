@@ -60,11 +60,25 @@ public class Model {
         resetGameTiles();
     }
 
+    public void randomMove(){
+        switch ((int) (Math.random() * 100) % 4) {
+            case (0) : left();
+            break;
+            case (1) : right();
+            break;
+            case (2) : up();
+            break;
+            case (3) : down();
+            break;
+        }
+
+    }
+
     private void saveState(Tile[][] tiles){
         Tile[][] tempGameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
         for (int i = 0; i < FIELD_WIDTH ; i++) {
             for (int j = 0; j < FIELD_WIDTH ; j++) {
-                tempGameTiles[i][j] = new Tile(tiles[i][j].getValue());
+                tempGameTiles[i][j] = new Tile(tiles[i][j].value);
             }
         }
          previousStates.push(tempGameTiles);
@@ -153,13 +167,16 @@ public class Model {
     }
     public void left(){
         boolean isChange = false;
+        if(isSaveNeeded) saveState(gameTiles);
         for (int i = 0; i < FIELD_WIDTH ; i++) {
             if(compressTiles(gameTiles[i]) | mergeTiles(gameTiles[i])) isChange = true;
         }
          if(isChange) addTile();
+         isSaveNeeded = true;
     }
 
     public void right(){
+        saveState(gameTiles);
         rotationClockWise();
         rotationClockWise();
         left();
@@ -168,6 +185,7 @@ public class Model {
     }
 
     public void up(){
+        saveState(gameTiles);
         rotationClockWise();
         rotationClockWise();
         rotationClockWise();
@@ -177,6 +195,7 @@ public class Model {
     }
 
     public void down(){
+        saveState(gameTiles);
         rotationClockWise();
         left();
         rotationClockWise();
